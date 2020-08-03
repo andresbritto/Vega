@@ -32,11 +32,16 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\dist\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\dist\**" />
+    <TypeScriptCompile Remove="ClientApp\dist\**" />
     <TypeScriptCompile Remove="ClientApp\node_modules\**" />
   </ItemGroup>
 
@@ -48,7 +53,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\dist\ClientApp\favicon.ico" />
+    <None Remove="ClientApp\dist\ClientApp\index.html" />
+    <None Remove="ClientApp\dist\ClientApp\main-es2015.js" />
+    <None Remove="ClientApp\dist\ClientApp\main-es2015.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\main-es5.js" />
+    <None Remove="ClientApp\dist\ClientApp\main-es5.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\polyfills-es2015.js" />
+    <None Remove="ClientApp\dist\ClientApp\polyfills-es2015.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\polyfills-es5.js" />
+    <None Remove="ClientApp\dist\ClientApp\polyfills-es5.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\runtime-es2015.js" />
+    <None Remove="ClientApp\dist\ClientApp\runtime-es2015.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\runtime-es5.js" />
+    <None Remove="ClientApp\dist\ClientApp\runtime-es5.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\scripts.js" />
+    <None Remove="ClientApp\dist\ClientApp\scripts.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\styles-es2015.js" />
+    <None Remove="ClientApp\dist\ClientApp\styles-es2015.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\styles-es5.js" />
+    <None Remove="ClientApp\dist\ClientApp\styles-es5.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\vendor-es2015.js" />
+    <None Remove="ClientApp\dist\ClientApp\vendor-es2015.js.map" />
+    <None Remove="ClientApp\dist\ClientApp\vendor-es5.js" />
+    <None Remove="ClientApp\dist\ClientApp\vendor-es5.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\src\app\Components\" />
+    <Folder Include="ClientApp\src\app\Services\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

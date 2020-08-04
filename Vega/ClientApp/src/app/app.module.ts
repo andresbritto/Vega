@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -9,7 +10,7 @@ import { HomeComponent } from './Components/home/home.component';
 import { NavmenuComponent } from './Components/navmenu/navmenu.component';
 import { VehicleFormComponent } from './Components/vehicle-form/vehicle-form.component';
 
-import { MakeService } from './Services/make.service';
+import { VehicleService } from './Services/vehicle.service';
 
 @NgModule({
   declarations: [
@@ -21,10 +22,11 @@ import { MakeService } from './Services/make.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
-    MakeService
+    VehicleService
   ],
   bootstrap: [AppComponent]
 })

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vega.Controllers.Resources;
-using Vega.Models;
+using Vega.Core.Models;
 using Vega.Persistence;
 
 namespace Vega.Controllers
@@ -27,11 +27,11 @@ namespace Vega.Controllers
 
         // GET: api/Features
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FeatureResource>>> GetFeatures()
+        public async Task<ActionResult<IEnumerable<KeyValuePairResource>>> GetFeatures()
         {
             var features = await _context.Features.ToListAsync();
 
-            return _mapper.Map<List<Feature>, List<FeatureResource>>(features);
+            return _mapper.Map<List<Feature>, List<KeyValuePairResource>>(features);
         }
 
         // GET: api/Features/5

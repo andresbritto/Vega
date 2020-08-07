@@ -13,8 +13,11 @@ namespace Vega.Persistence
             this.context = context;
         }
 
-        public async Task<Vehicle> GetVehicle(int id)
+        public async Task<Vehicle> GetVehicle(int id, bool includeRelated = true)
         {
+            if (!includeRelated)
+                return await context.Vehicles.FindAsync(id);
+
             return await context.Vehicles
               .Include(v => v.Features)
                 .ThenInclude(vf => vf.Feature)
@@ -23,9 +26,14 @@ namespace Vega.Persistence
               .SingleOrDefaultAsync(v => v.Id == id);
         }
 
-        Task<Vehicle> IVehicleRepository.GetVehicle(int id)
+        public void Add(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            context.Vehicles.Add(vehicle);
+        }
+
+        public void Remove(Vehicle vehicle)
+        {
+            context.Remove(vehicle);
         }
     }
 }

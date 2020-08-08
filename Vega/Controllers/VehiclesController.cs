@@ -25,7 +25,7 @@ namespace Vega.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
+        public async Task<IActionResult> CreateVehicle(SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -86,7 +86,7 @@ namespace Vega.Controllers
             var vehicle = await repository.GetVehicle(id);
 
             if (vehicle == null)
-                return Ok(1);
+                return NotFound();
 
             var vehicleResource = mapper.Map<Vehicle, SaveVehicleResource>(vehicle);
 

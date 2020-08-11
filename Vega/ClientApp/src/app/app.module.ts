@@ -1,7 +1,9 @@
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -11,6 +13,7 @@ import { NavmenuComponent } from './Components/navmenu/navmenu.component';
 import { VehicleFormComponent } from './Components/vehicle-form/vehicle-form.component';
 
 import { VehicleService } from './Services/vehicle.service';
+import { AppErrorHandler } from './app.error-handler';
 
 @NgModule({
   declarations: [
@@ -23,9 +26,13 @@ import { VehicleService } from './Services/vehicle.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
+    AppErrorHandler,
+    { provide: ErrorHandler, useClass: AppErrorHandler },
     VehicleService
   ],
   bootstrap: [AppComponent]

@@ -25,22 +25,29 @@ namespace Vega.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVehicle(SaveVehicleResource vehicleResource)
+        public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var vehicle = mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource);
-            vehicle.LastUpdate = DateTime.Now;
+                var vehicle = mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource);
+                vehicle.LastUpdate = DateTime.Now;
 
-            repository.Add(vehicle);
-            await unitOfWork.CompleteAsync();
+                repository.Add(vehicle);
+                await unitOfWork.CompleteAsync();
 
-            vehicle = await repository.GetVehicle(vehicle.Id);
+                vehicle = await repository.GetVehicle(vehicle.Id);
 
-            var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
+                var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest (ex.Message + " " + ex.InnerException.ToString());
+            }
         }
 
         [HttpPut("{id}")]

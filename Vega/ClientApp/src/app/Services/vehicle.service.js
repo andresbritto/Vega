@@ -19,7 +19,10 @@ var VehicleService = /** @class */ (function () {
         return this.http.get('/api/features');
     };
     VehicleService.prototype.create = function (vehicle) {
-        return this.http.post('https://localhost:44339/api/vehicles', vehicle);
+        return this.http.post('/api/vehicles', vehicle);
+    };
+    VehicleService.prototype.getVehicle = function (id) {
+        return this.http.get('/api/vehicles/' + id);
     };
     VehicleService = __decorate([
         core_1.Injectable({

@@ -14,6 +14,7 @@ var home_component_1 = require("./Components/home/home.component");
 var routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'vehicles/new', component: vehicle_form_component_1.VehicleFormComponent },
+    { path: 'vehicles/:id', component: vehicle_form_component_1.VehicleFormComponent },
     { path: 'home', component: home_component_1.HomeComponent },
     { path: '**', redirectTo: 'home' }
 ];

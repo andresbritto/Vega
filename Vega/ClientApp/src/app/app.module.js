@@ -9,14 +9,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 var forms_1 = require("@angular/forms");
 var platform_browser_1 = require("@angular/platform-browser");
+var animations_1 = require("@angular/platform-browser/animations");
 var http_1 = require("@angular/common/http");
 var core_1 = require("@angular/core");
+var ngx_toastr_1 = require("ngx-toastr");
 var app_routing_module_1 = require("./app-routing.module");
 var app_component_1 = require("./app.component");
 var home_component_1 = require("./Components/home/home.component");
 var navmenu_component_1 = require("./Components/navmenu/navmenu.component");
 var vehicle_form_component_1 = require("./Components/vehicle-form/vehicle-form.component");
 var vehicle_service_1 = require("./Services/vehicle.service");
+var app_error_handler_1 = require("./app.error-handler");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -32,9 +35,13 @@ var AppModule = /** @class */ (function () {
                 platform_browser_1.BrowserModule,
                 app_routing_module_1.AppRoutingModule,
                 http_1.HttpClientModule,
-                forms_1.FormsModule
+                forms_1.FormsModule,
+                animations_1.BrowserAnimationsModule,
+                ngx_toastr_1.ToastrModule.forRoot(),
             ],
             providers: [
+                app_error_handler_1.AppErrorHandler,
+                { provide: core_1.ErrorHandler, useClass: app_error_handler_1.AppErrorHandler },
                 vehicle_service_1.VehicleService
             ],
             bootstrap: [app_component_1.AppComponent]

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Vehicle } from '../models/vehicle';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class VehicleService {
   }
 
   create(vehicle) {
-    return this.http.post('https://localhost:44339/api/vehicles', vehicle);
+    return this.http.post('/api/vehicles', vehicle);
+  }
+
+  getVehicle(id) {
+    return this.http.get<Vehicle>('/api/vehicles/' + id);
   }
 }

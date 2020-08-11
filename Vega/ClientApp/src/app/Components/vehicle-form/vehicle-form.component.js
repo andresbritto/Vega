@@ -7,19 +7,70 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VehicleFormComponent = void 0;
+var _ = require("underscore");
 var core_1 = require("@angular/core");
+var rxjs_1 = require("rxjs");
 var VehicleFormComponent = /** @class */ (function () {
-    function VehicleFormComponent(vehicleService) {
+    function VehicleFormComponent(route, router, vehicleService) {
+        var _this = this;
+        this.route = route;
+        this.router = router;
         this.vehicleService = vehicleService;
         this.vehicle = {
+            id: 0,
+            makeId: 0,
+            modelId: 0,
+            isRegistered: false,
             features: [],
-            contact: {}
+            contact: {
+                name: '',
+                email: '',
+                phone: '',
+            }
         };
+        route.params.subscribe(function (p) {
+            _this.vehicle.id = +p['id'];
+        });
     }
+    //ngOnInit(): void {
+    //  if (this.vehicle.id)
+    //    this.vehicleService.getVehicle(this.vehicle.id)
+    //      .subscribe(v => {
+    //        this.vehicle = v;
+    //      }, err => {
+    //        if (err.status == 404)
+    //          this.router.navigate(['/home']);
+    //      });
+    //  this.vehicleService.getMakes()
+    //    .subscribe((makes: object[]) => this.makes = makes);
+    //  this.vehicleService.getFeatures()
+    //    .subscribe((features: object[]) => this.features = features);
+    //}
     VehicleFormComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.vehicleService.getMakes().subscribe(function (makes) { return _this.makes = makes; });
-        this.vehicleService.getFeatures().subscribe(function (features) { return _this.features = features; });
+        var sources = [
+            this.vehicleService.getMakes(),
+            this.vehicleService.getFeatures(),
+        ];
+        if (this.vehicle.id)
+            sources.push(this.vehicleService.getVehicle(this.vehicle.id));
+        rxjs_1.forkJoin(sources).subscribe(function (data) {
+            _this.makes = data[0];
+            _this.features = data[1];
+            if (_this.vehicle.id)
+                _this.setVehicle(data[2]);
+        }, function (err) {
+            if (err.status == 404)
+                _this.router.navigate(['/home']);
+        });
+    };
+    VehicleFormComponent.prototype.setVehicle = function (v) {
+        this.vehicle.id = v.id;
+        this.vehicle.makeId = v.make.id;
+        this.vehicle.modelId = v.model.id;
+        this.vehicle.isRegistered = v.isRegistered;
+        this.vehicle.contact = v.contact;
+        this.vehicle.features = _.pluck(v.features, 'id');
     };
     VehicleFormComponent.prototype.onMakeChange = function () {
         var _this = this;
@@ -36,9 +87,6 @@ var VehicleFormComponent = /** @class */ (function () {
         }
     };
     VehicleFormComponent.prototype.submit = function () {
-        //delete this.vehicle.makeId;
-        //this.vehicle.modelId = 1;
-        console.log(this.vehicle);
         this.vehicleService.create(this.vehicle)
             .subscribe(function (x) { return console.log(x); });
     };

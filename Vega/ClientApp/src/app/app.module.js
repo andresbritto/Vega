@@ -20,6 +20,7 @@ var navmenu_component_1 = require("./Components/navmenu/navmenu.component");
 var vehicle_form_component_1 = require("./Components/vehicle-form/vehicle-form.component");
 var vehicle_service_1 = require("./Services/vehicle.service");
 var app_error_handler_1 = require("./app.error-handler");
+var vehicle_list_component_1 = require("./Components/vehicle-list/vehicle-list.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -29,7 +30,8 @@ var AppModule = /** @class */ (function () {
                 app_component_1.AppComponent,
                 home_component_1.HomeComponent,
                 navmenu_component_1.NavmenuComponent,
-                vehicle_form_component_1.VehicleFormComponent
+                vehicle_form_component_1.VehicleFormComponent,
+                vehicle_list_component_1.VehicleListComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,

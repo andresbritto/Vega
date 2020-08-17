@@ -11,6 +11,7 @@ var core_1 = require("@angular/core");
 var VehicleService = /** @class */ (function () {
     function VehicleService(http) {
         this.http = http;
+        this.vehiclesEndpoint = '/api/vehicles/';
     }
     VehicleService.prototype.getMakes = function () {
         return this.http.get('/api/makes');
@@ -19,10 +20,33 @@ var VehicleService = /** @class */ (function () {
         return this.http.get('/api/features');
     };
     VehicleService.prototype.create = function (vehicle) {
-        return this.http.post('/api/vehicles', vehicle);
+        return this.http.post(this.vehiclesEndpoint, vehicle);
+    };
+    VehicleService.prototype.update = function (vehicle) {
+        return this.http.put(this.vehiclesEndpoint + vehicle.id, vehicle);
+    };
+    VehicleService.prototype.delete = function (id) {
+        return this.http.delete(this.vehiclesEndpoint + id);
     };
     VehicleService.prototype.getVehicle = function (id) {
-        return this.http.get('/api/vehicles/' + id);
+        return this.http.get(this.vehiclesEndpoint + id);
+    };
+    //filtering on the Client
+    //getVehicles() {
+    //  return this.http.get<Vehicle[]>(this.vehiclesEndpoint);
+    //}
+    //filtering on the Server
+    VehicleService.prototype.getVehicles = function (filter) {
+        return this.http.get(this.vehiclesEndpoint + '?' + this.toQueryString(filter));
+    };
+    VehicleService.prototype.toQueryString = function (obj) {
+        var parts = [];
+        for (var property in obj) {
+            var value = obj[property];
+            if (value !== null && value !== undefined)
+                parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
+        }
+        return parts.join('&');
     };
     VehicleService = __decorate([
         core_1.Injectable({

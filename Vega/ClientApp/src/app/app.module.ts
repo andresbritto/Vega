@@ -14,13 +14,15 @@ import { VehicleFormComponent } from './Components/vehicle-form/vehicle-form.com
 
 import { VehicleService } from './Services/vehicle.service';
 import { AppErrorHandler } from './app.error-handler';
+import { VehicleListComponent } from './Components/vehicle-list/vehicle-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavmenuComponent,
-    VehicleFormComponent
+    VehicleFormComponent,
+    VehicleListComponent
   ],
   imports: [
     BrowserModule,

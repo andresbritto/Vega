@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vega.Controllers.Resources;
 using Vega.Core.Models;
 using Vega.Core;
+using System.Collections.Generic;
 
 namespace Vega.Controllers
 {
@@ -95,9 +96,18 @@ namespace Vega.Controllers
             if (vehicle == null)
                 return NotFound();
 
-            var vehicleResource = mapper.Map<Vehicle, SaveVehicleResource>(vehicle);
+            var vehicleResource = mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(vehicleResource);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<VehicleResource>> GetVehicles([FromQuery] VehicleQueryResource filterResource)
+        {
+            var filter = mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
+            var vehicles = await repository.GetVehicles(filter);
+
+            return mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
         }
     }
 }

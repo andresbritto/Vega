@@ -11,11 +11,12 @@ var _ = require("underscore");
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
 var VehicleFormComponent = /** @class */ (function () {
-    function VehicleFormComponent(route, router, vehicleService) {
+    function VehicleFormComponent(route, router, vehicleService, toastrService) {
         var _this = this;
         this.route = route;
         this.router = router;
         this.vehicleService = vehicleService;
+        this.toastrService = toastrService;
         this.vehicle = {
             id: 0,
             makeId: 0,
@@ -29,7 +30,7 @@ var VehicleFormComponent = /** @class */ (function () {
             }
         };
         route.params.subscribe(function (p) {
-            _this.vehicle.id = +p['id'];
+            _this.vehicle.id = +p['id'] ? +p['id'] : 0;
         });
     }
     //ngOnInit(): void {
@@ -57,10 +58,12 @@ var VehicleFormComponent = /** @class */ (function () {
         rxjs_1.forkJoin(sources).subscribe(function (data) {
             _this.makes = data[0];
             _this.features = data[1];
-            if (_this.vehicle.id)
+            if (_this.vehicle.id) {
                 _this.setVehicle(data[2]);
+                _this.populateModels();
+            }
         }, function (err) {
-            if (err.status == 404)
+            if (err.status === 404)
                 _this.router.navigate(['/home']);
         });
     };
@@ -73,10 +76,13 @@ var VehicleFormComponent = /** @class */ (function () {
         this.vehicle.features = _.pluck(v.features, 'id');
     };
     VehicleFormComponent.prototype.onMakeChange = function () {
-        var _this = this;
-        var selectedMake = this.makes.find(function (m) { return m.id == _this.vehicle.makeId; });
-        this.models = selectedMake ? selectedMake.models : [];
+        this.populateModels();
         delete this.vehicle.modelId;
+    };
+    VehicleFormComponent.prototype.populateModels = function () {
+        var _this = this;
+        var selectedMake = this.makes.find(function (m) { return m.id === _this.vehicle.makeId; });
+        this.models = selectedMake ? selectedMake.models : [];
     };
     VehicleFormComponent.prototype.onFeatureToggle = function (featureId, $event) {
         if ($event.target.checked)
@@ -87,8 +93,27 @@ var VehicleFormComponent = /** @class */ (function () {
         }
     };
     VehicleFormComponent.prototype.submit = function () {
-        this.vehicleService.create(this.vehicle)
-            .subscribe(function (x) { return console.log(x); });
+        var _this = this;
+        if (this.vehicle.id) {
+            this.vehicleService.update(this.vehicle)
+                .subscribe(function (x) {
+                _this.toastrService.success('The vehicle was sucessfully updated.', 'Success');
+            });
+        }
+        else {
+            this.vehicleService.create(this.vehicle)
+                .subscribe(function (x) { _this.vehicle.id = x.id; console.log(x); });
+        }
+    };
+    VehicleFormComponent.prototype.delete = function () {
+        var _this = this;
+        if (confirm("Are you sure?")) {
+            this.vehicleService.delete(this.vehicle.id)
+                .subscribe(function (x) {
+                _this.toastrService.success('The vehicle was sucessfully deleted.', 'Success');
+                _this.router.navigate(['/home']);
+            });
+        }
     };
     VehicleFormComponent = __decorate([
         core_1.Component({

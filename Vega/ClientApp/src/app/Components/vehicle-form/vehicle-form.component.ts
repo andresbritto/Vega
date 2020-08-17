@@ -4,6 +4,8 @@ import { SaveVehicle, Vehicle } from './../../models/vehicle';
 import { VehicleService } from '../../Services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -31,10 +33,11 @@ export class VehicleFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private vehicleService: VehicleService) {
+    private vehicleService: VehicleService,
+    private toastrService: ToastrService) {
 
     route.params.subscribe(p => {
-      this.vehicle.id = +p['id'];
+      this.vehicle.id = +p['id'] ? +p['id'] : 0;
     });
   }
 
@@ -69,28 +72,36 @@ export class VehicleFormComponent implements OnInit {
       this.makes = data[0];
       this.features = data[1];
 
-      if (this.vehicle.id)
+      if (this.vehicle.id) {
         this.setVehicle(data[2]);
-
+        this.populateModels();
+      }
+              
     }, err => {
-      if (err.status == 404)
-        this.router.navigate(['/home']);
+        if (err.status === 404)
+         this.router.navigate(['/home']);
     });
   }
 
   private setVehicle(v: Vehicle) {
+    
     this.vehicle.id = v.id;
     this.vehicle.makeId = v.make.id;
     this.vehicle.modelId = v.model.id;
     this.vehicle.isRegistered = v.isRegistered;
     this.vehicle.contact = v.contact;
     this.vehicle.features = _.pluck(v.features, 'id');
+
   }
 
   onMakeChange() {
-    let selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
-    this.models = selectedMake ? selectedMake.models : [];
+    this.populateModels();
     delete this.vehicle.modelId;
+  }
+
+  private populateModels() {
+    const selectedMake = this.makes.find(m => m.id === this.vehicle.makeId);
+    this.models = selectedMake ? selectedMake.models : [];
   }
 
   onFeatureToggle(featureId, $event) {
@@ -103,7 +114,26 @@ export class VehicleFormComponent implements OnInit {
   }
 
   submit() {
-    this.vehicleService.create(this.vehicle)
-      .subscribe(x => console.log(x));
+    if (this.vehicle.id) {
+      this.vehicleService.update(this.vehicle)
+        .subscribe(x => {
+          this.toastrService.success('The vehicle was sucessfully updated.', 'Success');
+        });
+    }
+    else {
+      this.vehicleService.create(this.vehicle)
+        .subscribe(x => { this.vehicle.id = x.id; console.log(x) });
+
+    }
+  }
+
+  delete() {
+    if (confirm("Are you sure?")) {
+      this.vehicleService.delete(this.vehicle.id)
+        .subscribe(x => {
+          this.toastrService.success('The vehicle was sucessfully deleted.', 'Success');
+          this.router.navigate(['/home']);
+        });
+    }
   }
 }

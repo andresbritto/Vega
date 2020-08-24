@@ -12,10 +12,12 @@ var router_1 = require("@angular/router");
 var vehicle_form_component_1 = require("./Components/vehicle-form/vehicle-form.component");
 var home_component_1 = require("./Components/home/home.component");
 var vehicle_list_component_1 = require("./Components/vehicle-list/vehicle-list.component");
+var view_vehicle_component_1 = require("./Components/view-vehicle/view-vehicle.component");
 var routes = [
     { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
     { path: 'vehicles/new', component: vehicle_form_component_1.VehicleFormComponent },
-    { path: 'vehicles/:id', component: vehicle_form_component_1.VehicleFormComponent },
+    { path: 'vehicles/edit/:id', component: vehicle_form_component_1.VehicleFormComponent },
+    { path: 'vehicles/:id', component: view_vehicle_component_1.ViewVehicleComponent },
     { path: 'vehicles', component: vehicle_list_component_1.VehicleListComponent },
     { path: 'home', component: home_component_1.HomeComponent },
     { path: '**', redirectTo: 'home' }

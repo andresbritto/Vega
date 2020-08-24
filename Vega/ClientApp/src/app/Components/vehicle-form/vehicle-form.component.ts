@@ -3,9 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { SaveVehicle, Vehicle } from './../../models/vehicle';
 import { VehicleService } from '../../Services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -37,7 +36,7 @@ export class VehicleFormComponent implements OnInit {
     private toastrService: ToastrService) {
 
     route.params.subscribe(p => {
-      this.vehicle.id = +p['id'] ? +p['id'] : 0;
+      this.vehicle.id = +p['id'] || 0;
     });
   }
 
@@ -114,26 +113,11 @@ export class VehicleFormComponent implements OnInit {
   }
 
   submit() {
-    if (this.vehicle.id) {
-      this.vehicleService.update(this.vehicle)
-        .subscribe(x => {
-          this.toastrService.success('The vehicle was sucessfully updated.', 'Success');
-        });
-    }
-    else {
-      this.vehicleService.create(this.vehicle)
-        .subscribe(x => { this.vehicle.id = x.id; console.log(x) });
-
-    }
+    const result$ = (this.vehicle.id) ? this.vehicleService.update(this.vehicle) : this.vehicleService.create(this.vehicle);
+    result$.subscribe(vehicle => {
+      this.toastrService.success('The vehicle was sucessfully updated.', 'Success');
+      this.router.navigate(['/vehicles/', vehicle.id])
+    });
   }
 
-  delete() {
-    if (confirm("Are you sure?")) {
-      this.vehicleService.delete(this.vehicle.id)
-        .subscribe(x => {
-          this.toastrService.success('The vehicle was sucessfully deleted.', 'Success');
-          this.router.navigate(['/home']);
-        });
-    }
-  }
 }

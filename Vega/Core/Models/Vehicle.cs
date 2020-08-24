@@ -13,23 +13,26 @@ namespace Vega.Core.Models
         public int ModelId { get; set; }
         public Model Model { get; set; }
         public bool IsRegistered { get; set; }
+        
         [Required]
         [StringLength(255)]
         public string ContactName { get; set; }
-
+        
         [StringLength(255)]
         public string ContactEmail { get; set; }
-
+        
         [Required]
         [StringLength(255)]
         public string ContactPhone { get; set; }
         public DateTime LastUpdate { get; set; }
 
         public ICollection<VehicleFeature> Features { get; set; }
+        public ICollection<Photo> Photos { get; set; }
 
         public Vehicle()
         {
             Features = new Collection<VehicleFeature>();
+            Photos = new Collection<Photo>();
         }
     }
 }

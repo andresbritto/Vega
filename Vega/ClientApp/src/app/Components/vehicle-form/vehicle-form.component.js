@@ -30,7 +30,7 @@ var VehicleFormComponent = /** @class */ (function () {
             }
         };
         route.params.subscribe(function (p) {
-            _this.vehicle.id = +p['id'] ? +p['id'] : 0;
+            _this.vehicle.id = +p['id'] || 0;
         });
     }
     //ngOnInit(): void {
@@ -94,26 +94,11 @@ var VehicleFormComponent = /** @class */ (function () {
     };
     VehicleFormComponent.prototype.submit = function () {
         var _this = this;
-        if (this.vehicle.id) {
-            this.vehicleService.update(this.vehicle)
-                .subscribe(function (x) {
-                _this.toastrService.success('The vehicle was sucessfully updated.', 'Success');
-            });
-        }
-        else {
-            this.vehicleService.create(this.vehicle)
-                .subscribe(function (x) { _this.vehicle.id = x.id; console.log(x); });
-        }
-    };
-    VehicleFormComponent.prototype.delete = function () {
-        var _this = this;
-        if (confirm("Are you sure?")) {
-            this.vehicleService.delete(this.vehicle.id)
-                .subscribe(function (x) {
-                _this.toastrService.success('The vehicle was sucessfully deleted.', 'Success');
-                _this.router.navigate(['/home']);
-            });
-        }
+        var result$ = (this.vehicle.id) ? this.vehicleService.update(this.vehicle) : this.vehicleService.create(this.vehicle);
+        result$.subscribe(function (vehicle) {
+            _this.toastrService.success('The vehicle was sucessfully updated.', 'Success');
+            _this.router.navigate(['/vehicles/', vehicle.id]);
+        });
     };
     VehicleFormComponent = __decorate([
         core_1.Component({

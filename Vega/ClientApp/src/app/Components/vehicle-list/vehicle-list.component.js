@@ -11,7 +11,21 @@ var core_1 = require("@angular/core");
 var VehicleListComponent = /** @class */ (function () {
     function VehicleListComponent(vehicleService) {
         this.vehicleService = vehicleService;
-        this.filter = {};
+        this.PAGE_SIZE = 3;
+        this.queryResult = {
+            totalItems: 0,
+            items: []
+        };
+        this.query = {
+            pageSize: this.PAGE_SIZE
+        };
+        this.columns = [
+            { title: 'Id' },
+            { title: 'Contact Name', key: 'contactName', isSortable: true },
+            { title: 'Make', key: 'make', isSortable: true },
+            { title: 'Model', key: 'model', isSortable: true },
+            {}
+        ];
     }
     VehicleListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -35,15 +49,33 @@ var VehicleListComponent = /** @class */ (function () {
     //filtering on the Server
     VehicleListComponent.prototype.populateVehicles = function () {
         var _this = this;
-        this.vehicleService.getVehicles(this.filter)
-            .subscribe(function (vehicles) { return _this.vehicles = vehicles; });
+        this.vehicleService.getVehicles(this.query)
+            .subscribe(function (result) { return _this.queryResult = result; });
     };
     VehicleListComponent.prototype.onFilterChange = function () {
+        this.query.page = 1;
         this.populateVehicles();
     };
     VehicleListComponent.prototype.resetFilter = function () {
-        this.filter = {};
-        this.onFilterChange();
+        this.query = {
+            page: 1,
+            pageSize: this.PAGE_SIZE
+        };
+        this.populateVehicles();
+    };
+    VehicleListComponent.prototype.sortBy = function (columnName) {
+        if (this.query.sortBy === columnName) {
+            this.query.isSortAscending = !this.query.isSortAscending;
+        }
+        else {
+            this.query.sortBy = columnName;
+            this.query.isSortAscending = true;
+        }
+        this.populateVehicles();
+    };
+    VehicleListComponent.prototype.onPageChange = function (page) {
+        this.query.page = page;
+        this.populateVehicles();
     };
     VehicleListComponent = __decorate([
         core_1.Component({

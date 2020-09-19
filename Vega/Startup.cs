@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using Vega.Core;
+using Vega.Core.Models;
 using Vega.Persistence;
 
 namespace Vega
@@ -33,7 +34,8 @@ namespace Vega
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            
+
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

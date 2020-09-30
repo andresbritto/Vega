@@ -9,11 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViewVehicleComponent = void 0;
 var core_1 = require("@angular/core");
 var ViewVehicleComponent = /** @class */ (function () {
-    function ViewVehicleComponent(route, router, toastrService, vehicleService) {
+    function ViewVehicleComponent(route, router, toastrService, photoService, vehicleService) {
         var _this = this;
         this.route = route;
         this.router = router;
         this.toastrService = toastrService;
+        this.photoService = photoService;
         this.vehicleService = vehicleService;
         route.params.subscribe(function (p) {
             _this.vehicleId = +p['id'];
@@ -25,6 +26,8 @@ var ViewVehicleComponent = /** @class */ (function () {
     }
     ViewVehicleComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.photoService.getPhotos(this.vehicleId)
+            .subscribe(function (photos) { return _this.photos = photos; });
         this.vehicleService.getVehicle(this.vehicleId)
             .subscribe(function (v) { return _this.vehicle = v; }, function (err) {
             if (err.status === 404) {
@@ -43,6 +46,17 @@ var ViewVehicleComponent = /** @class */ (function () {
             });
         }
     };
+    ViewVehicleComponent.prototype.uploadPhoto = function () {
+        var _this = this;
+        var nativeElement = this.fileInput.nativeElement;
+        this.photoService.upload(this.vehicleId, nativeElement.files[0])
+            .subscribe(function (photo) {
+            _this.photos.push(photo);
+        });
+    };
+    __decorate([
+        core_1.ViewChild('fileInput')
+    ], ViewVehicleComponent.prototype, "fileInput", void 0);
     ViewVehicleComponent = __decorate([
         core_1.Component({
             selector: 'app-view-vehicle',

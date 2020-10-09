@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-navmenu',
@@ -6,6 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./navmenu.component.scss']
 })
 export class NavmenuComponent  {
+
+  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) {
+    this.auth.user$.subscribe(
+      u => console.log(u)
+    )
+  }
 
   isExpanded = false;
 

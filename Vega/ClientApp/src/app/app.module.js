@@ -23,6 +23,8 @@ var app_error_handler_1 = require("./app.error-handler");
 var vehicle_list_component_1 = require("./Components/vehicle-list/vehicle-list.component");
 var pagination_component_1 = require("./Components/shared/pagination/pagination.component");
 var view_vehicle_component_1 = require("./Components/view-vehicle/view-vehicle.component");
+// Import the module from the SDK
+var auth0_angular_1 = require("@auth0/auth0-angular");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -44,6 +46,11 @@ var AppModule = /** @class */ (function () {
                 forms_1.FormsModule,
                 animations_1.BrowserAnimationsModule,
                 ngx_toastr_1.ToastrModule.forRoot(),
+                // Import the module into the application, with configuration
+                auth0_angular_1.AuthModule.forRoot({
+                    domain: 'andresbritto.us.auth0.com',
+                    clientId: 'LGOPsidQEtBJRxyQ8vKd32E30KxAWwkc'
+                }),
             ],
             providers: [
                 app_error_handler_1.AppErrorHandler,

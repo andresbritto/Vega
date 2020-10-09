@@ -11,9 +11,27 @@
               (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <ul *ngIf="auth.user$ | async as user">
+        <li>{{ user.name }}</li>
+        <li>{{ user.email }}</li>
+      </ul>
       <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
            [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
+          <li class="nav-item">
+            <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+              <a class="nav-link text-dark" (click)="auth.logout({ returnTo: document.location.origin })">
+                <span class='glyphicon glyphicon-user'></span>Log out
+              </a>
+            </ng-container>
+
+            <ng-template #loggedOut>
+              <a class="nav-link text-dark" (click)="auth.loginWithRedirect()">
+              <!--<a class="nav-link text-dark" href="andresbritto.us.auth0.com/login">-->
+                <span class='glyphicon glyphicon-user'></span>Log in
+              </a>
+            </ng-template>
+          </li>
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">

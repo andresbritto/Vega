@@ -13,9 +13,10 @@ var vehicle_form_component_1 = require("./Components/vehicle-form/vehicle-form.c
 var home_component_1 = require("./Components/home/home.component");
 var vehicle_list_component_1 = require("./Components/vehicle-list/vehicle-list.component");
 var view_vehicle_component_1 = require("./Components/view-vehicle/view-vehicle.component");
+var auth_gaurd_service_1 = require("./Services/auth-gaurd.service");
 var routes = [
     { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
-    { path: 'vehicles/new', component: vehicle_form_component_1.VehicleFormComponent },
+    { path: 'vehicles/new', component: vehicle_form_component_1.VehicleFormComponent, canActivate: [auth_gaurd_service_1.AuthGaurdService] },
     { path: 'vehicles/edit/:id', component: vehicle_form_component_1.VehicleFormComponent },
     { path: 'vehicles/:id', component: view_vehicle_component_1.ViewVehicleComponent },
     { path: 'vehicles', component: vehicle_list_component_1.VehicleListComponent },

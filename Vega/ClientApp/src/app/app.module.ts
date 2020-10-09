@@ -18,6 +18,9 @@ import { VehicleListComponent } from './Components/vehicle-list/vehicle-list.com
 import { PaginationComponent } from './Components/shared/pagination/pagination.component';
 import { ViewVehicleComponent } from './Components/view-vehicle/view-vehicle.component';
 
+// Import the module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +38,11 @@ import { ViewVehicleComponent } from './Components/view-vehicle/view-vehicle.com
     FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    // Import the module into the application, with configuration
+    AuthModule.forRoot({
+      domain: 'andresbritto.us.auth0.com',
+      clientId: 'LGOPsidQEtBJRxyQ8vKd32E30KxAWwkc'
+    }),
   ],
   providers: [
     AppErrorHandler,

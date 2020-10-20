@@ -8,12 +8,13 @@ using Vega.Core.Models;
 using Vega.Core;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Vega.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : ControllerBase
+    public class VehiclesController : Controller
     {
         private readonly IMapper mapper;
         private readonly IVehicleRepository repository;
@@ -24,6 +25,14 @@ namespace Vega.Controllers
             this.mapper = mapper;
             this.repository = repository;
             this.unitOfWork = unitOfWork;
+            
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            // your code here
+            var aux = HttpContext.Request.Cookies;
         }
 
         [HttpPost]

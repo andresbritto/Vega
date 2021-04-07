@@ -80,6 +80,7 @@
     <None Remove="ClientApp\dist\ClientApp\vendor-es5.js" />
     <None Remove="ClientApp\dist\ClientApp\vendor-es5.js.map" />
     <None Remove="ClientApp\src\app\app.error-handler.ts" />
+    <None Remove="ClientApp\src\app\Models\default-errors.ts" />
     <None Remove="ClientApp\src\app\Models\vehicle.ts" />
   </ItemGroup>
 

@@ -20,6 +20,8 @@ import { ViewVehicleComponent } from './Components/view-vehicle/view-vehicle.com
 
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
+import { ControlErrorsDirective } from './Directives/control-errors.directive';
+import { ControlErrorComponent } from './Components/control-error/control-error.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { AuthModule } from '@auth0/auth0-angular';
     VehicleFormComponent,
     VehicleListComponent,
     PaginationComponent,
-    ViewVehicleComponent
+    ViewVehicleComponent,
+    ControlErrorsDirective,
+    ControlErrorComponent
   ],
   imports: [
     BrowserModule,

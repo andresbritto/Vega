@@ -25,6 +25,8 @@ var pagination_component_1 = require("./Components/shared/pagination/pagination.
 var view_vehicle_component_1 = require("./Components/view-vehicle/view-vehicle.component");
 // Import the module from the SDK
 var auth0_angular_1 = require("@auth0/auth0-angular");
+var control_errors_directive_1 = require("./Directives/control-errors.directive");
+var control_error_component_1 = require("./Components/control-error/control-error.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -37,7 +39,9 @@ var AppModule = /** @class */ (function () {
                 vehicle_form_component_1.VehicleFormComponent,
                 vehicle_list_component_1.VehicleListComponent,
                 pagination_component_1.PaginationComponent,
-                view_vehicle_component_1.ViewVehicleComponent
+                view_vehicle_component_1.ViewVehicleComponent,
+                control_errors_directive_1.ControlErrorsDirective,
+                control_error_component_1.ControlErrorComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
